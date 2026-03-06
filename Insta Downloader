@@ -1,0 +1,14 @@
+Reels 
+
+pkg install python ffmpeg -y
+
+pip install yt-dlp
+
+yt-dlp "PASTE_INSTAGRAM_URL_HERE"
+
+Posts
+
+pip install gallery-dl
+
+gallery-dl "PASTE_INSTAGRAM_URL_HERE"
+
