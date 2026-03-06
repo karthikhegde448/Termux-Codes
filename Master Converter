@@ -1,0 +1,24 @@
+pkg update && pkg upgrade
+pkg install ffmpeg imagemagick pandoc
+
+1. For Video and Audio
+
+ffmpeg -i "input" -c copy "output"
+
+Special: (mkv to MP3)
+ffmpeg -i "input_video.mkv" -vn -c:a copy "output.m4a"
+
+ffmpeg -i "output.m4a" -q:a 2 "trial.mp3"
+
+2.For Images
+
+magick "input.ext" "output.ext"
+
+For multiple images
+magick mogrify -format webp *.jpg
+
+Change webp to the wanted extension and change .jpg to the present one 
+
+3. For Documents
+
+pandoc "input.ext" -o "output.ext
