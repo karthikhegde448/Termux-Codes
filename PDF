@@ -1,0 +1,170 @@
+Image to pdf
+
+pkg install python-pillow
+pip install pypdf
+
+
+python -c "from PIL import Image; import os; p='/sdcard/Download/trial'; out='/sdcard/Download/final.pdf'; imgs=[Image.open(os.path.join(p, f)).convert('RGB') for f in sorted(os.listdir(p)) if f.lower().endswith(('.jpg','.png','.jpeg'))]; imgs[0].save(out, save_all=True, append_images=imgs[1:]) if imgs else print('No images found')"
+
+Write in place of trial the folder name keep every image in the same folder 
+
+
+To convert multiple images into individual PDFs (one PDF per image) within a folder
+
+pkg install imagemagick
+
+for f in *.jpg; do magick "$f" "${f%.jpg}.pdf"; done
+
+
+For png, change .jpg to .png
+
+PDF to image 
+
+pkg install poppler
+
+pdftocairo -jpeg "all_combined.pdf" page
+
+
+Change the name of all_combined.pdf to work and also keep the pdf in trial folder 
+
+For specific pages:
+
+pdftocairo -jpeg -f 5 -l 5 "Edit.pdf" "page"
+
+Put page no.s f for initial and l for final
+
+Splitting PDF 
+
+pkg install qpdf
+
+qpdf --split-pages "input.pdf" "output_%s.pdf"
+
+Splits each of the page into a pdf
+
+
+qpdf --pages "input.pdf" 1-5 -- "input.pdf" "range_1_to_5.pdf"
+
+Splits only selected no of pages in a pdf. In both places write the name of the original file in input.pdf
+
+
+qpdf --empty --pages "input.pdf" 2-5,7-10,12-16 -- "combined_selection.pdf"
+
+Want to select pages in any order use this 
+
+
+Whiten PDF 
+
+magick -density 300 "input.pdf" -colorspace gray -threshold 60% -deskew 40% "cleaned_output.pdf"
+
+
+⭐Scan is too light(increase boldness)
+
+magick -density 300 "input.pdf" -colorspace gray -level 20%,80% "bold_output.pdf"
+
+
+All in one(boldness and whiteness)
+
+magick -density 300 "input.pdf" -colorspace gray -sharpen 0x1 -level 25%,75% "best_print.pdf"
+
+ 
+Write the original file name in place of input.pdf
+
+
+Merging 
+
+pip install pypdf
+
+For files without folder
+
+python -c "from pypdf import PdfWriter; writer = PdfWriter(); [writer.append(f'/sdcard/Download/{f}') for f in ['file1.pdf', 'file2.pdf']]; writer.write('/sdcard/Download/merged_output.pdf')"
+
+For a folder
+
+python -c "import os; from pypdf import PdfWriter; writer = PdfWriter(); path='/sdcard/Download/my_pdfs'; files=sorted([f for f in os.listdir(path) if f.endswith('.pdf')]); [writer.append(os.path.join(path, f)) for f in files]; writer.write('/sdcard/Download/all_combined.pdf')"
+
+
+
+Change my_pdfs to the folder name to work
+
+
+Locking
+
+pip install pypdf
+
+python -c "from pypdf import PdfReader, PdfWriter; reader = PdfReader('/sdcard/Download/final.pdf'); writer = PdfWriter(); writer.append_pages_from_reader(reader); writer.encrypt('your_password_here'); [writer.write(f) for f in [open('/sdcard/Download/final_locked.pdf', 'wb')]]"
+
+Change final.pdf to name.pdf to work
+
+Pdf compressing 
+
+pkg install ghostscript
+
+/screen (Low Quality)
+/ebook (Medium Quality)
+/printer (High Quality)
+
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile="compressed.pdf" "input.pdf" 
+
+Change the name of input.pdf to original file 
+
+
+Watermark 
+
+pkg install imagemagick
+pkg install qpdf
+
+magick -size 1000x1400 xc:none -gravity Center -pointsize 160 -fill "rgba(128,128,128,0.3)" -draw "rotate -45 text 0,0 'WATERMARK'" stamp.pdf
+
+qpdf "input.pdf" --overlay stamp.pdf --repeat=1 -- Final_Result.pdf
+
+
+
+Write the watermark in place of WATERMARK 
+
+For Indian language :
+
+Check which fonts are available in your system:
+
+fc-list :lang=kn  # For Kannada
+fc-list :lang=hi  # For Hindi
+
+Once you have a font name (e.g., NotoSansKannada-Regular), add it to your command:
+
+
+magick -size 1000x1400 xc:none -font "Noto-Sans-Kannada-Regular" -gravity Center -pointsize 150 -fill "rgba(128,128,128,0.3)" -draw "rotate -45 text 0,0 'ಚಿಹ್ನೆ'" stamp.pdf
+
+Write the watermark in place of 
+ಚಿಹ್ನೆ
+
+qpdf "input.pdf" --overlay stamp.pdf --repeat=1 -- Final_Result.pdf
+
+
+Multiple pages per sheet
+
+2 pages per sheet
+
+pkg install pdfcpu
+
+pdfcpu nup Final_2up.pdf 2 "input.pdf"
+
+
+Rotation of pages
+
+pkg install qpdf
+
+
+qpdf "input.pdf" --rotate=ANGLE:1-z -- "output.pdf"
+
+Replace ANGLE with your desired multiple of 90:
+90: Clockwise (Landscape Right)
+180: Upside Down
+270: Counter-clockwise (Landscape Left)
+0: Original Orientation
+
+
+
+
+
+
+
+
