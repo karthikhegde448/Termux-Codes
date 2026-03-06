@@ -1,0 +1,17 @@
+Compression
+
+Individual photo
+
+pkg install imagemagick
+
+
+magick "input.jpg" -define jpeg:extent=50kb "government_photo.jpg"
+
+Set the name of the photo in input.jpg
+
+Multiple photos
+
+for f in *.{jpg,jpeg,png,webp}; do magick "$f" -quality 60 -resize 1920x1080\> "compressed_${f}"; done
+
+
+Keep all photos in a folder 
