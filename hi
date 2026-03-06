@@ -1,0 +1,61 @@
+Merging audio
+
+pkg install ffmpeg
+
+
+ffmpeg -f concat -safe 0 -i <(for f in *.mp3; do echo "file '$PWD/$f'"; done) -c copy "merged_output.mp3"
+
+
+Just enter the folder using cd and rewrite the name of the output as you want
+
+Trimming audio 
+
+pkg install ffmpeg
+
+
+ffmpeg -i "input.mp3"  -ss 00:00:30 -t 00:00:10 -c copy "output.mp3" 
+
+
+00:00:30 initial time
+00:00:10 time period of trim
+
+
+Increase the volume
+
+
+ffmpeg -i "input.mp3" -filter:a "volume=2.0" "louder_audio.mp3"
+ 
+
+Volume=2.0 change 2.0 to the speed you want 
+
+
+Increase pitchness
+
+ffmpeg -i "input.mp3" -filter:a "asetrate=44100*1.5,aresample=44100" "high_pitch.mp3"
+
+
+Increase speed 
+
+
+ffmpeg -i "input.mp3" -filter:a "atempo=2.0" -vn "fast_audio.mp3"
+
+
+Change 2.0 for different speed
+
+
+Silencer
+
+ffmpeg -i "input.mp3" -filter_complex \
+"anullsrc=r=44100:cl=stereo:d=5[silence]; \
+[0:a]atrim=end=10[part1]; \
+[0:a]atrim=start=10[part2]; \
+[part1][silence][part2]concat=n=3:v=0:a=1" \
+"output.mp3"
+
+The Gap Duration (d=5): Inside the anullsrc section, change 5 to the number of seconds of silence you want to insert.
+
+The Split Point (end=10 and start=10): This is the "timestamp" where the silence will be injected. Change 10 to the second mark where you want the gap to appear.
+
+Note: Both numbers must be the same so the audio isn't cut or repeated.
+
+
