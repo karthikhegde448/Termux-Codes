@@ -1,0 +1,7 @@
+pkg install exiftool 
+
+dd if=/dev/zero bs=1K count=600 | exiftool "-Comment<=-" /storage/emulated/0/Download/input.jpg
+
+Write the needed extra  size in place of 600(it's in kb)
+
+
