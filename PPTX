@@ -1,0 +1,16 @@
+Splitting 
+
+pkg update
+pkg install clang libxml2 libxslt pkg-config
+pip install python-pptx
+
+python -c "from pptx import Presentation; import sys; prs=Presentation('MyProject.pptx'); i=5-1; [prs.slides._sldIdLst.remove(s) for s in list(prs.slides._sldIdLst) if s != prs.slides._sldIdLst[i]]; prs.save('Single_Slide.pptx')"
+
+In case of 5 put the slide number you want and write original file name in My project. pptx 
+
+Merging
+
+python -c "import glob, copy; from pptx import Presentation; out=Presentation(); [ [ (new_sld:=out.slides.add_slide(out.slide_layouts[0]), [new_sld.shapes._spTree.append(copy.deepcopy(shp.element)) for shp in sld.shapes]) for sld in Presentation(f).slides ] for f in sorted(glob.glob('*.pptx')) if f != 'Text_Merged.pptx' ]; out.save('Text_Merged.pptx'); print('Successfully Merged Text Slides')"
+
+
+All pptx are in one folder
