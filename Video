@@ -1,0 +1,43 @@
+Compressing video
+
+Fast compressing
+
+pkg install ffmpeg 
+
+ffmpeg -i input.mp4 -vcodec libx264 -preset ultrafast -crf 25 output.mp4
+ 
+
+Just go to the selected folder using cd 
+
+Slower but heavy compression 
+
+ffmpeg -i input.mp4 -vcodec libx265 -crf 23 -preset superfast -acodec copy output.mp4
+
+
+Merging
+
+For videos of same quality 
+
+ffmpeg -f concat -safe 0 -i <(for f in *.mp4; do echo "file '$PWD/$f'"; done) -c copy "fast_merge.mp4"
+
+Keep the video in specific folder and write cd 
+
+For videos of different quality
+
+ffmpeg -f concat -safe 0 -i <(for f in *.mp4; do echo "file '$PWD/$f'"; done) -c:v libx264 -preset fast -crf 23 -c:a aac "unified_merged_video.mp4"
+ 
+Keep the video in specific folder and write cd 
+
+Trim or cut 
+
+ffmpeg -ss 00:00:10 -i "input.mp4" -t 00:00:20 -c copy "cut_video.mp4"
+
+
+Read the video name in input.mp4
+
+
+Remove audio of video
+
+ffmpeg -i "input_video.mp4" -an -c:v copy "output_muted.mp4"
+
+
