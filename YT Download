@@ -16,7 +16,7 @@ yt-dlp -f "bv[height<=360][ext=mp4]+ba[ext=m4a]/b[height<=360][ext=mp4]/best[hei
 
 Video for selected time 
 
-Yt-dlp -f "bestvideo[height<=360]+bestaudio/best" --download-sections "*00:01:00-00:01:30" -o "clip_360p.mp4" "URL"
+yt-dlp -f "bestvideo[height<=360]+bestaudio/best" --download-sections "*00:01:00-00:01:30" -o "clip_360p.mp4" "URL"
 
 Enter starting and ending time and change quality by writing in place of 360
 
