@@ -1,0 +1,56 @@
+Using gdown package (small and quick)
+
+# Update and upgrade existing packages
+
+
+pkg update && pkg upgrade -y
+
+# Install Python and necessary tools
+
+
+pkg install python -y
+pip install --upgrade pip
+pip install gdown
+
+
+
+# Navigate to the folder where you want the downloads
+
+
+# Download a folder (use -c to resume if interrupted)
+
+
+gdown -c --folder "https://drive.google.com/drive/folders/YOUR_FOLDER_ID_HERE"
+
+
+
+
+
+Using rclone package (complex for setting up)
+
+# Install rclone
+pkg install rclone -y
+
+# Start the configuration process
+rclone config
+
+Configuration Steps:
+Type n for a new remote.
+Name it gdrive.
+Select the number corresponding to drive (Google Drive).
+Leave Client ID and Secret blank (press Enter).
+Select scope 1 (Full access).
+Type n for advanced config and n for auto-config.
+Paste the authorization URL into your mobile browser, copy the code provided by Google, and paste it back into Termux
+
+# Check size of a specific folder
+
+rclone size gdrive:"Your Folder Name" -P
+
+# Copy only PDFs from a remote folder to your phone
+
+rclone copy gdrive:"Main_Folder" /sdcard/Documents/PDFs --include "*.pdf" --include "*/" -P
+
+Write the name of folder in place of Main_folder
+
+
