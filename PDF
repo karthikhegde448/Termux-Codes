@@ -6,7 +6,9 @@ pip install pypdf
 
 python -c "from PIL import Image; import os; p='/sdcard/Download/trial'; out='/sdcard/Download/final.pdf'; imgs=[Image.open(os.path.join(p, f)).convert('RGB') for f in sorted(os.listdir(p)) if f.lower().endswith(('.jpg','.png','.jpeg'))]; imgs[0].save(out, save_all=True, append_images=imgs[1:]) if imgs else print('No images found')"
 
-Write in place of trial the folder name keep every image in the same folder 
+
+Write in place of trial the folder name and keep every image in the same folder 
+
 
 
 To convert multiple images into individual PDFs (one PDF per image) within a folder
@@ -18,6 +20,8 @@ for f in *.jpg; do magick "$f" "${f%.jpg}.pdf"; done
 
 For png, change .jpg to .png
 
+
+
 PDF to image 
 
 pkg install poppler
@@ -27,11 +31,14 @@ pdftocairo -jpeg "all_combined.pdf" page
 
 Change the name of all_combined.pdf to work and also keep the pdf in trial folder 
 
+
 For specific pages:
 
 pdftocairo -jpeg -f 5 -l 5 "Edit.pdf" "page"
 
 Put page no.s f for initial and l for final
+
+
 
 Splitting PDF 
 
@@ -52,14 +59,17 @@ qpdf --empty --pages "input.pdf" 2-5,7-10,12-16 -- "combined_selection.pdf"
 Want to select pages in any order use this 
 
 
+
 Whiten PDF 
 
 magick -density 300 "input.pdf" -colorspace gray -threshold 60% -deskew 40% "cleaned_output.pdf"
 
 
+
 ⭐Scan is too light(increase boldness)
 
 magick -density 300 "input.pdf" -colorspace gray -level 20%,80% "bold_output.pdf"
+
 
 
 All in one(boldness and whiteness)
@@ -70,6 +80,7 @@ magick -density 300 "input.pdf" -colorspace gray -sharpen 0x1 -level 25%,75% "be
 Write the original file name in place of input.pdf
 
 
+
 Merging 
 
 pip install pypdf
@@ -78,13 +89,16 @@ For files without folder
 
 python -c "from pypdf import PdfWriter; writer = PdfWriter(); [writer.append(f'/sdcard/Download/{f}') for f in ['file1.pdf', 'file2.pdf']]; writer.write('/sdcard/Download/merged_output.pdf')"
 
+
 For a folder
+
 
 python -c "import os; from pypdf import PdfWriter; writer = PdfWriter(); path='/sdcard/Download/my_pdfs'; files=sorted([f for f in os.listdir(path) if f.endswith('.pdf')]); [writer.append(os.path.join(path, f)) for f in files]; writer.write('/sdcard/Download/all_combined.pdf')"
 
 
 
 Change my_pdfs to the folder name to work
+
 
 
 Locking
@@ -94,6 +108,15 @@ pip install pypdf
 python -c "from pypdf import PdfReader, PdfWriter; reader = PdfReader('/sdcard/Download/final.pdf'); writer = PdfWriter(); writer.append_pages_from_reader(reader); writer.encrypt('your_password_here'); [writer.write(f) for f in [open('/sdcard/Download/final_locked.pdf', 'wb')]]"
 
 Change final.pdf to name.pdf to work
+
+
+Unlocking
+
+qpdf --decrypt --password="your_password" "locked_file.pdf" "unlocked_output.pdf"
+
+Rename the locked_file.pdf as the original PDF name and write password in place of your_password
+
+
 
 Pdf compressing 
 
@@ -108,6 +131,8 @@ gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -d
 Change the name of input.pdf to original file 
 
 
+
+
 Watermark 
 
 pkg install imagemagick
@@ -120,6 +145,7 @@ qpdf "input.pdf" --overlay stamp.pdf --repeat=1 -- Final_Result.pdf
 
 
 Write the watermark in place of WATERMARK 
+
 
 For Indian language :
 
@@ -139,6 +165,8 @@ Write the watermark in place of
 qpdf "input.pdf" --overlay stamp.pdf --repeat=1 -- Final_Result.pdf
 
 
+
+
 Multiple pages per sheet
 
 2 pages per sheet
@@ -146,6 +174,8 @@ Multiple pages per sheet
 pkg install pdfcpu
 
 pdfcpu nup Final_2up.pdf 2 "input.pdf"
+
+
 
 
 Rotation of pages
@@ -163,7 +193,12 @@ Replace ANGLE with your desired multiple of 90:
 
 
 
+Adding background to a PDF 
 
+Make a PDF using an image and name it as background.pdf
+
+
+qpdf "input.pdf" --underlay "background.pdf" --repeat=1 -- Final_Result.pdf
 
 
 
