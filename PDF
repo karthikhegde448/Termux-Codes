@@ -6,8 +6,7 @@ pip install pypdf
 
 python -c "from PIL import Image; import os; p='/sdcard/Download/trial'; out='/sdcard/Download/final.pdf'; imgs=[Image.open(os.path.join(p, f)).convert('RGB') for f in sorted(os.listdir(p)) if f.lower().endswith(('.jpg','.png','.jpeg'))]; imgs[0].save(out, save_all=True, append_images=imgs[1:]) if imgs else print('No images found')"
 
-
-Write in place of trial the folder name and keep every image in the same folder 
+Write in place of trial the folder name keep every image in the same folder 
 
 
 
@@ -116,6 +115,12 @@ qpdf --decrypt --password="your_password" "locked_file.pdf" "unlocked_output.pdf
 
 Rename the locked_file.pdf as the original PDF name and write password in place of your_password
 
+Unlocking many pdfs at one time
+
+
+for file in *.pdf; do qpdf --decrypt --password="YOUR_PASS" "$file" "unlocked_$file"; done
+
+Just replace YOUR_PASS by password and keep the files in a single folder
 
 
 Pdf compressing 
@@ -199,7 +204,6 @@ Make a PDF using an image and name it as background.pdf
 
 
 qpdf "input.pdf" --underlay "background.pdf" --repeat=1 -- Final_Result.pdf
-
 
 
 
