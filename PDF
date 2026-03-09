@@ -111,11 +111,14 @@ Change final.pdf to name.pdf to work
 
 Unlocking
 
+pkg install qpdf
+
 qpdf --decrypt --password="your_password" "locked_file.pdf" "unlocked_output.pdf"
 
 Rename the locked_file.pdf as the original PDF name and write password in place of your_password
 
 Unlocking many pdfs at one time
+Only when all have same password
 
 
 for file in *.pdf; do qpdf --decrypt --password="YOUR_PASS" "$file" "unlocked_$file"; done
@@ -204,6 +207,5 @@ Make a PDF using an image and name it as background.pdf
 
 
 qpdf "input.pdf" --underlay "background.pdf" --repeat=1 -- Final_Result.pdf
-
 
 
