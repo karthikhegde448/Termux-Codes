@@ -58,5 +58,10 @@ The Split Point (end=10 and start=10): This is the "timestamp" where the silence
 
 Note: Both numbers must be the same so the audio isn't cut or repeated.
 
+When Audio is too early (Delay Audio)
+
+ffmpeg -i "input.mp4" -itsoffset 10.0 -i "input.mp4" -map 0:v -map 1:a -c:v copy -c:a aac "output_fixed.mp4"
+
+In place of 10.0 put the delayed time period and replace input.mp4by filename
 
 
