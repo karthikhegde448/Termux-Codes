@@ -41,3 +41,13 @@ Remove audio of video
 ffmpeg -i "input_video.mp4" -an -c:v copy "output_muted.mp4"
 
 
+When Video is too early (Delay Video)
+
+ffmpeg -i "input.mp4" -itsoffset 10.0 -i "input.mp4" -map 1:v -map 0:a -c:v copy -c:a aac "output_fixed.mp4"
+
+In place of 10.0 put the delayed time period and replace input.mp4by filename
+
+
+
+
+
