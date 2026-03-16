@@ -16,7 +16,7 @@ yt-dlp -f "bv[height<=360][ext=mp4]+ba[ext=m4a]/b[height<=360][ext=mp4]/best[hei
 
 Video for selected time 
 
-yt-dlp -f "bestvideo[height<=360]+bestaudio/best" --download-sections "*00:01:00-00:01:30" -o "clip_360p.mp4" "URL"
+Yt-dlp -f "bestvideo[height<=360]+bestaudio/best" --download-sections "*00:01:00-00:01:30" -o "clip_360p.mp4" "URL"
 
 Enter starting and ending time and change quality by writing in place of 360
 
@@ -46,4 +46,15 @@ yt-dlp -x --audio-format mp3 --audio-quality 0 \
 --yes-playlist \
 -o "%(playlist_title)s/%(playlist_index)s - %(title)s.%(ext)s" \
 "YOUR_PLAYLIST_URL_HERE"
+
+
+
+
+Download video with subtitles 
+
+cd /sdcard/Download
+yt-dlp -f "bv[height<=480]+ba/b[height<=480]" --write-sub --write-auto-sub --sub-lang en,hi,kn --embed-subs --merge-output-format mkv "URL" && rm *.vtt *.srt *.ass
+
+
+Just place the link in place of URL
 
