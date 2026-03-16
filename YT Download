@@ -53,7 +53,7 @@ yt-dlp -x --audio-format mp3 --audio-quality 0 \
 Download video with subtitles 
 
 cd /sdcard/Download
-yt-dlp -f "bv[height<=480]+ba/b[height<=480]" --write-sub --write-auto-sub --sub-lang en,hi,kn --embed-subs --merge-output-format mkv "URL" && rm *.vtt *.srt *.ass
+yt-dlp -f "bv[height<=480]+ba/b[height<=480]" --write-sub --write-auto-sub --sub-lang en,hi,kn --embed-subs --merge-output-format mkv "URL" 
 
 
 Just place the link in place of URL
