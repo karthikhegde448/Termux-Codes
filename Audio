@@ -26,7 +26,8 @@ Increase the volume
 ffmpeg -i "input.mp3" -filter:a "volume=2.0" "louder_audio.mp3"
  
 
-Volume=2.0 change 2.0 to the speed you want 
+Change 2.0 to different volumes 
+2.0 doubles the initial volume
 
 
 Increase pitchness
