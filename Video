@@ -47,6 +47,18 @@ ffmpeg -i "input.mp4" -itsoffset 10.0 -i "input.mp4" -map 1:v -map 0:a -c:v copy
 
 In place of 10.0 put the delayed time period and replace input.mp4by filename
 
+Increasing Volume
+
+ffmpeg -i "input_video.mp4" -filter:a "volume=2.0" -c:v copy "louder_video.mp4"
+
+Change 2.0 for different volumes 
+2.0 doubles the volume
+Can even write volume in decibels 
+as 10dB
+
+Volume Normalising cmd
+
+ffmpeg -i "input.mp4" -af loudnorm -c:v copy "normalized_video.mp4"
 
 
 
