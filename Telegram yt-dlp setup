@@ -1,0 +1,159 @@
+​1. Preparing the Environment
+​Before creating the file, make sure your Termux has the necessary tools and storage access.
+​Grant Storage Access: (So the bot can save to your phone's Download folder)
+termux-setup-storage
+​Install Python and Nano:
+pkg update && pkg upgrade
+pkg install python nano
+​Install Libraries:
+pip install pyTelegramBotAPI yt-dlp
+​2. Creating and Editing the Bot
+​We will use Nano, which is a simple text editor inside the terminal.
+​Create the file:
+Type this command to open a new blank file named bot_dl.py:
+nano bot_dl.py
+​Paste your code:
+Copy the code longest code here below mentioned as bot_dl.py code. In Termux, you usually long-press the screen and select Paste.
+​Saving and Exiting (The "Secret" Keys):
+Nano uses Ctrl (Control) shortcuts shown at the bottom of the screen.
+​To Save: Press Ctrl + O (The letter O for "Output"), then press Enter to confirm the filename.
+​To Exit: Press Ctrl + X.
+​3. Running and Managing the Bot
+​Once you are back at the command prompt (the $ sign), use these commands:
+
+Start the Bot 
+python bot_dl.py
+
+Stop the Bot 
+Press Ctrl + C (This kills the process)
+
+Check Files 
+ls (Lists all files in your current folder)
+
+Delete the Bot rm bot_dl.py (Be careful with this one!)
+
+Keep Bot Running termux-wake-lock (Prevents Android from killing the bot when screen is off)
+
+
+bot_dl.py code(The main Code):Paste this in the nano
+bot_dl.py
+
+
+import telebot
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+import subprocess
+import json
+import os
+
+# --- CONFIGURATION ---
+API_TOKEN = 'YOUR_NEW_BOT_TOKEN' 
+MY_ID = 8700285290 
+DOWNLOAD_PATH = "/sdcard/Download/"
+
+bot = telebot.TeleBot(API_TOKEN)
+user_data = {}
+
+def get_available_qualities(url):
+    try:
+        # Fetching formats without downloading
+        cmd = f'yt-dlp -j --no-playlist "{url}"'
+        result = subprocess.check_output(cmd, shell=True).decode('utf-8')
+        data = json.loads(result)
+        formats = data.get('formats', [])
+        # Filters out resolutions smaller than 144p
+        heights = sorted(list(set(f.get('height') for f in formats if f.get('height') and f.get('height') > 144)))
+        return heights
+    except:
+        return []
+
+@bot.message_handler(func=lambda message: message.from_user.id == MY_ID)
+def handle_link(message):
+    url = message.text
+    if "youtube.com" in url or "youtu.be" in url:
+        user_data[message.chat.id] = {'url': url}
+        markup = InlineKeyboardMarkup()
+        markup.row(
+            InlineKeyboardButton("🎵 Audio (MP3)", callback_data="type_audio"),
+            InlineKeyboardButton("🎬 Video (MP4)", callback_data="type_video")
+        )
+        bot.reply_to(message, "What would you like to download?", reply_markup=markup)
+    else:
+        bot.reply_to(message, "Please send a valid YouTube link.")
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith('type_'))
+def handle_type_selection(call):
+    choice = call.data.split('_')[1]
+    url = user_data[call.message.chat.id]['url']
+    
+    if choice == "audio":
+        bot.edit_message_text("📥 Downloading Audio (MP3)...", call.message.chat.id, call.message.message_id)
+        cmd = f'yt-dlp -x --audio-format mp3 -o "{DOWNLOAD_PATH}%(title)s.%(ext)s" "{url}"'
+        try:
+            subprocess.run(cmd, shell=True, check=True)
+            bot.send_message(MY_ID, "✅ Audio Download Finished!")
+        except Exception as e:
+            bot.send_message(MY_ID, f"❌ Error: {e}")
+            
+    elif choice == "video":
+        bot.edit_message_text("🔍 Fetching available video qualities...", call.message.chat.id, call.message.message_id)
+        qualities = get_available_qualities(url)
+        if not qualities:
+            bot.edit_message_text("❌ No video qualities found.", call.message.chat.id, call.message.message_id)
+            return
+
+        markup = InlineKeyboardMarkup()
+        row = []
+        for q in qualities:
+            row.append(InlineKeyboardButton(f"{q}p", callback_data=f"q_{q}"))
+            if len(row) == 3:
+                markup.row(*row)
+                row = []
+        if row: markup.row(*row)
+        bot.edit_message_text("✅ Select Video Quality:", call.message.chat.id, call.message.message_id, reply_markup=markup)
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith('q_'))
+def handle_video_download(call):
+    quality = call.data.split('_')[1]
+    url = user_data[call.message.chat.id]['url']
+    bot.edit_message_text(f"📥 Downloading {quality}p Video...", call.message.chat.id, call.message.message_id)
+    
+    cmd = f'yt-dlp -f "bestvideo[height<={quality}]+bestaudio/best[height<={quality}]" --merge-output-format mp4 -o "{DOWNLOAD_PATH}%(title)s.%(ext)s" "{url}"'
+    
+    try:
+        subprocess.run(cmd, shell=True, check=True)
+        bot.send_message(MY_ID, f"✅ Video Download Finished ({quality}p)!")
+    except Exception as e:
+        bot.send_message(MY_ID, f"❌ Error: {e}")
+
+print("--- Bot is ONLINE ---")
+bot.infinity_polling()
+
+
+
+
+
+
+
+Creating an alias for the above cmd
+
+Open your configuration file:
+nano ~/.bashrc
+
+​Find the line you wrote earlier and 
+change start to y:
+alias y='cd /sdcard/Download && python bot_dl.py'
+
+​Save and Exit:
+Press Ctrl + O, then Enter, then Ctrl + X.
+
+​Refresh the shell:
+source ~/.bashrc
+
+
+
+
+
+
+
+
+Quick Reminder: If you ever get an error saying yt-dlp is out of date, just run pip install -U yt-dlp in Termux to update it
