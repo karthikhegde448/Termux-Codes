@@ -47,7 +47,7 @@ import os
 
 # --- CONFIGURATION ---
 API_TOKEN = 'YOUR_NEW_BOT_TOKEN' 
-MY_ID = 8700285290 
+MY_ID = 123456789 
 DOWNLOAD_PATH = "/sdcard/Download/"
 
 bot = telebot.TeleBot(API_TOKEN)
