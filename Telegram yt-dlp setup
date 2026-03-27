@@ -35,8 +35,8 @@ Delete the Bot rm bot_dl.py (Be careful with this one!)
 Keep Bot Running termux-wake-lock (Prevents Android from killing the bot when screen is off)
 
 
-bot_dl.py code(The main Code):Paste this in the nano
-bot_dl.py
+bot_dl.py code(The main Code):Paste this in 
+the nano bot_dl.py
 
 
 import telebot
