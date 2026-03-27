@@ -5,6 +5,7 @@ termux-setup-storage
 Entering into a folder
 
 cd /sdcard/Foldername
+To enter back into home folder just type 'cd' and a dollar sign appears
 
 If folder name has spaces then either use single or double inverted commas
 
@@ -27,8 +28,7 @@ To view what's in a folder
 
 ls /sdcard/'Folder Name'
 
-
-Updating and Upgrading
+Updating or Upgrading
 
 The core command to update the Termux package manager and all installed binary packages (including ffmpeg, python, openssl, etc.) is:
 
@@ -37,7 +37,6 @@ pkg update && pkg upgrade -y
 pkg update: Refreshes the list of available packages from the repositories.
 ​pkg upgrade: Downloads and installs the newer versions of your installed apps.
 ​-y: Automatically says "yes" to prompts to speed up the process.
-
 
 Shortcuts
 
