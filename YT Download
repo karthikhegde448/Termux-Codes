@@ -2,6 +2,9 @@ pkg install python
 pkg install ffmpeg
 pip install yt-dlp
 
+Updating yt-dlp
+
+python -m pip install -U yt-dlp
 
 Audio format
 
