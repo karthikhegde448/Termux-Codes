@@ -1,0 +1,69 @@
+pkg install python
+pkg install ffmpeg
+pip install yt-dlp
+
+Updating yt-dlp
+
+python -m pip install -U yt-dlp
+
+Audio format
+
+cd /sdcard/Download
+yt-dlp -x --audio-format mp3 "URL"
+
+Audio with thumbnail 
+
+yt-dlp -x --audio-format mp3 --embed-thumbnail "URL"
+
+
+Video format
+
+cd /sdcard/Download
+yt-dlp -f "bv[height<=360][ext=mp4]+ba[ext=m4a]/b[height<=360][ext=mp4]/best[height<=360]" --merge-output-format mp4 "YOUR_URL_HERE"
+
+
+Video for selected time 
+
+Yt-dlp -f "bestvideo[height<=360]+bestaudio/best" --download-sections "*00:01:00-00:01:30" -o "clip_360p.mp4" "URL"
+
+Enter starting and ending time and change quality by writing in place of 360
+
+Audio for selected time
+
+yt-dlp -x --audio-format mp3 --download-sections "*00:01:00-00:02:30" -o "my_clipped_audio.mp3" "YOUR_URL_HERE"
+
+Enter starting and ending time
+
+
+For a playlist :
+Video download
+
+cd /sdcard/Download
+yt-dlp -f "bv[height<=360][ext=mp4]+ba[ext=m4a]/b[height<=360][ext=mp4]/best[height<=360]" \
+--merge-output-format mp4 \
+--yes-playlist \
+-o "%(playlist_title)s/%(playlist_index)s - %(title)s.%(ext)s" \
+"YOUR_PLAYLIST_URL_HERE"
+
+
+Audio Download 
+
+
+cd /sdcard/Download
+yt-dlp -x --audio-format mp3 --audio-quality 0 \
+--yes-playlist \
+-o "%(playlist_title)s/%(playlist_index)s - %(title)s.%(ext)s" \
+"YOUR_PLAYLIST_URL_HERE"
+
+
+
+Download specific videos from a playlist
+
+yt-dlp --playlist-items 100-200 \
+-f "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]/best[height<=480][ext=mp4]" \
+--merge-output-format mp4 \
+-o "%(playlist_index)s - %(title)s.%(ext)s" \
+"YOUR_PLAYLIST_URL"
+
+Change 100-200 for the particular range and edit quality by changing 480
+
